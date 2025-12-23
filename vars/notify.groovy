@@ -11,11 +11,11 @@ def call(String recipient) {
         // Git info
         def lastCommit = sh(script: "git log -1 --pretty=format:'%h|%an|%s'", returnStdout: true).trim().split('\\|')
         def gitBranch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim()
+        def commitsScanned = sh(script: "git rev-list --count HEAD", returnStdout: true).trim()
 
         // Gitleaks info
-        def gitleaksReport = fileExists('gitleaks-report.json') ? readJSON(file: 'gitleaks-report.json') : [:]
-        def leaksFound = gitleaksReport?.size() ?: 0
-        def commitsScanned = gitleaksReport?.commits_scanned ?: '0'
+        def gitleaksReport = fileExists('gitleaks-report.json') ? readJSON(file: 'gitleaks-report.json') : []
+        def leaksFound = gitleaksReport instanceof List ? gitleaksReport.size() : 0
         def secretStatus = leaksFound > 0 ? 'Secrets Found!' : 'No secrets detected'
         def secretColor = leaksFound > 0 ? 'red' : 'green'
 
@@ -26,8 +26,8 @@ def call(String recipient) {
                                .replace('${BUILD_NUMBER}', "${BUILD_NUMBER}")
                                .replace('${JOB_NAME}', "${JOB_NAME}")
                                .replace('${BUILD_URL}', "${BUILD_URL}")
-                               .replace('${JOB_DISPLAY_URL}', "${BUILD_URL}")  // Can adjust if you have job URL separate
-                               .replace('${RUN_DISPLAY_URL}', "${BUILD_URL}")  // Can adjust if you have run URL separate
+                               .replace('${JOB_DISPLAY_URL}', "${BUILD_URL}")  // Adjust if you have job URL separate
+                               .replace('${RUN_DISPLAY_URL}', "${BUILD_URL}")  // Adjust if you have run URL separate
                                .replace('${GIT_BRANCH}', gitBranch)
                                .replace('${LAST_COMMIT_ID}', lastCommit[0])
                                .replace('${LAST_COMMIT_AUTHOR}', lastCommit[1])
