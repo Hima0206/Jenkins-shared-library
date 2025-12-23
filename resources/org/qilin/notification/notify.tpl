@@ -74,6 +74,10 @@
       <td class="status">${BUILD_STATUS}</td>
     </tr>
     <tr>
+      <td>Triggered By</td>
+      <td>${BUILD_TRIGGERED_BY}</td>
+    </tr>
+    <tr>
       <td>Build Duration</td>
       <td>${BUILD_DURATION}</td>
     </tr>
