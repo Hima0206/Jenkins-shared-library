@@ -47,11 +47,6 @@
       font-weight: bold;
       color: ${STATUS_COLOR}; 
     }
-
-    .secret-status {
-      font-weight: bold;
-      color: ${SECRET_COLOR}; 
-    }
   </style>
 </head>
 <body>
@@ -93,14 +88,6 @@
     <tr>
       <td>Last Commit</td>
       <td>${LAST_COMMIT_ID} - ${LAST_COMMIT_MESSAGE} (by ${LAST_COMMIT_AUTHOR})</td>
-    </tr>
-    <tr>
-      <td>Gitleaks Scan</td>
-      <td class="secret-status">
-        ${GITLEAKS_STATUS} <br>
-        Commits scanned: ${GITLEAKS_COMMITS_SCANNED} <br>
-        Leaks found: ${GITLEAKS_LEAKS_FOUND}
-      </td>
     </tr>
   </tbody>
 </table>
