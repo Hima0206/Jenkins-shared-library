@@ -13,7 +13,11 @@ def call(String recipient) {
         def gitBranch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim()
         def commitsScanned = sh(script: "git rev-list --count HEAD", returnStdout: true).trim()
         def buildDuration = currentBuild.durationString.replace(' and counting', '')
-        
+
+        // Get build cause(s)
+        def causes = currentBuild.rawBuild.getCauses()
+        def triggeredBy = causes.collect { it.shortDescription }.join(", ")
+
         // Replace placeholders in template
         tplContent = tplContent.replace('${BUILD_STATUS}', buildStatus)
                                .replace('${STATUS_COLOR}', statusColor)
@@ -21,13 +25,14 @@ def call(String recipient) {
                                .replace('${BUILD_NUMBER}', "${BUILD_NUMBER}")
                                .replace('${JOB_NAME}', "${JOB_NAME}")
                                .replace('${BUILD_URL}', "${BUILD_URL}")
-                               .replace('${JOB_DISPLAY_URL}', "${BUILD_URL}") // Adjust if you have job URL separate
-                               .replace('${RUN_DISPLAY_URL}', "${BUILD_URL}") // Adjust if you have run URL separate
+                               .replace('${JOB_DISPLAY_URL}', "${BUILD_URL}")
+                               .replace('${RUN_DISPLAY_URL}', "${BUILD_URL}")
                                .replace('${GIT_BRANCH}', gitBranch)
                                .replace('${LAST_COMMIT_ID}', lastCommit[0])
                                .replace('${LAST_COMMIT_AUTHOR}', lastCommit[1])
                                .replace('${LAST_COMMIT_MESSAGE}', lastCommit[2])
                                .replace('${BUILD_DURATION}', buildDuration)
+                               .replace('${BUILD_TRIGGERED_BY}', triggeredBy)
 
         // Write final HTML to workspace
         writeFile file: "${WORKSPACE}/notify.html", text: tplContent
