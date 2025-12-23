@@ -1,7 +1,7 @@
 def call(String recipient) {
     script {
         // Load HTML template from shared library
-        def tplContent = libraryResource "org/dcube/notification/notify.tpl"
+        def tplContent = libraryResource "org/qilin/notification/notify.tpl"
 
         // Build status and colors
         def buildStatus = currentBuild.currentResult
