@@ -11,7 +11,7 @@
     }
 
     h1 {
-      background-color: ${HEADER_COLOR}; /* Header color based on build status */
+      background-color: ${HEADER_COLOR}; 
       color: #ffffff;
       padding: 20px;
       margin: 0;
@@ -45,7 +45,12 @@
 
     .status {
       font-weight: bold;
-      color: ${STATUS_COLOR}; /* Status text color based on build status */
+      color: ${STATUS_COLOR}; 
+    }
+
+    .secret-status {
+      font-weight: bold;
+      color: ${SECRET_COLOR}; 
     }
   </style>
 </head>
@@ -63,27 +68,39 @@
   <tbody>
     <tr>
       <td>Build Number</td>
-      <td id="build_number">${BUILD_NUMBER}</td>
+      <td>${BUILD_NUMBER}</td>
     </tr>
     <tr>
       <td>Job Name</td>
-      <td id="job_name">${JOB_NAME}</td>
+      <td>${JOB_NAME}</td>
     </tr>
     <tr>
       <td>Build Status</td>
-      <td id="build_status" class="status">${BUILD_STATUS}</td>
+      <td class="status">${BUILD_STATUS}</td>
+    </tr>
+    <tr>
+      <td>Build Duration</td>
+      <td>${BUILD_DURATION}</td>
     </tr>
     <tr>
       <td>Build URL</td>
-      <td id="build_url"><a href="${BUILD_URL}" target="_blank">${BUILD_URL}</a></td>
+      <td><a href="${BUILD_URL}" target="_blank">${BUILD_URL}</a></td>
     </tr>
     <tr>
-      <td>Branch URL</td>
-      <td id="branch_url"><a href="${JOB_DISPLAY_URL}" target="_blank">${JOB_DISPLAY_URL}</a></td>
+      <td>Branch</td>
+      <td><a href="${JOB_DISPLAY_URL}" target="_blank">${GIT_BRANCH}</a></td>
     </tr>
     <tr>
-      <td>Build Details</td>
-      <td id="build_details"><a href="${RUN_DISPLAY_URL}" target="_blank">${RUN_DISPLAY_URL}</a></td>
+      <td>Last Commit</td>
+      <td>${LAST_COMMIT_ID} - ${LAST_COMMIT_MESSAGE} (by ${LAST_COMMIT_AUTHOR})</td>
+    </tr>
+    <tr>
+      <td>Gitleaks Scan</td>
+      <td class="secret-status">
+        ${GITLEAKS_STATUS} <br>
+        Commits scanned: ${GITLEAKS_COMMITS_SCANNED} <br>
+        Leaks found: ${GITLEAKS_LEAKS_FOUND}
+      </td>
     </tr>
   </tbody>
 </table>
