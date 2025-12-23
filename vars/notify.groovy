@@ -12,7 +12,8 @@ def call(String recipient) {
         def lastCommit = sh(script: "git log -1 --pretty=format:'%h|%an|%s'", returnStdout: true).trim().split('\\|')
         def gitBranch = sh(script: "git rev-parse --abbrev-ref HEAD", returnStdout: true).trim()
         def commitsScanned = sh(script: "git rev-list --count HEAD", returnStdout: true).trim()
-
+        def buildDuration = currentBuild.durationString.replace(' and counting', '')
+        
         // Replace placeholders in template
         tplContent = tplContent.replace('${BUILD_STATUS}', buildStatus)
                                .replace('${STATUS_COLOR}', statusColor)
@@ -26,6 +27,7 @@ def call(String recipient) {
                                .replace('${LAST_COMMIT_ID}', lastCommit[0])
                                .replace('${LAST_COMMIT_AUTHOR}', lastCommit[1])
                                .replace('${LAST_COMMIT_MESSAGE}', lastCommit[2])
+                               .replace('${BUILD_DURATION}', buildDuration)
 
         // Write final HTML to workspace
         writeFile file: "${WORKSPACE}/notify.html", text: tplContent
